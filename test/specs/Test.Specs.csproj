@@ -1,12 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
+    <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+
+    <!-- Assembly Metadata -->
+    <AssemblyTitle>Test.Specs</AssemblyTitle>
+    <AssemblyDescription></AssemblyDescription>
+    <AssemblyConfiguration></AssemblyConfiguration>
+    <Company></Company>
+    <Product>Test.Specs</Product>
+    <Copyright>Copyright © 2017</Copyright>
+    <Trademark></Trademark>
+    <AssemblyCulture></AssemblyCulture>
+
+    <!-- Version Information -->
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0.0</Version>
+
+    <!-- COM Visibility and GUID -->
+    <ComVisible>false</ComVisible>
+    <Guid>31278a78-1321-40be-8c99-02ed9fd9e45e</Guid>
   </PropertyGroup>
 
   <ItemGroup>
