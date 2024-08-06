@@ -4,10 +4,10 @@ namespace TDL.Client.Queue
 {
     public class ImplementationRunnerConfig
     {
-        public string Hostname { get; private set; }
+        public string? Hostname { get; private set; }
         public int Port { get; private set; }
-        public string RequestQueueName { get; private set; }
-        public string ResponseQueueName { get; private set; }
+        public string? RequestQueueName { get; private set; }
+        public string? ResponseQueueName { get; private set; }
         public long RequestTimeoutMilliseconds { get; private set; }
         public IAuditStream AuditStream { get; private set; }
 

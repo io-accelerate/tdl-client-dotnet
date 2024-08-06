@@ -10,7 +10,7 @@ namespace TDL.Client.Utils
 
         static PathHelper()
         {
-            var exeDirectoryPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var exeDirectoryPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
             RepositoryPath = GetRepositoryPath(exeDirectoryPath) ?? exeDirectoryPath;
         }
 
@@ -28,7 +28,8 @@ namespace TDL.Client.Utils
             }
             while (currentDirectory != null);
 
-            return null;
+            // If no valid repository path is found, return an empty string or handle appropriately.
+            return string.Empty;
         }
     }
 }

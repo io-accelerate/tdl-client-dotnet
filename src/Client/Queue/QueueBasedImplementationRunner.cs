@@ -17,8 +17,23 @@ namespace TDL.Client
             ImplementationRunnerConfig config,
             ProcessingRules deployProcessingRules)
         {
-            this.config = config;
-            this.deployProcessingRules = deployProcessingRules;
+            this.config = config ?? throw new ArgumentNullException(nameof(config));
+            this.deployProcessingRules = deployProcessingRules ?? throw new ArgumentNullException(nameof(deployProcessingRules));
+
+            if (string.IsNullOrWhiteSpace(config.Hostname))
+            {
+                throw new ArgumentException("Hostname cannot be null or empty", nameof(config.Hostname));
+            }
+            
+            if (string.IsNullOrWhiteSpace(config.RequestQueueName))
+            {
+                throw new ArgumentException("RequestQueueName cannot be null or empty", nameof(config.RequestQueueName));
+            }
+
+            if (string.IsNullOrWhiteSpace(config.ResponseQueueName))
+            {
+                throw new ArgumentException("ResponseQueueName cannot be null or empty", nameof(config.ResponseQueueName));
+            }
 
             audit = new Audit(config.AuditStream);
         }

@@ -4,7 +4,6 @@ using TDL.Client.Queue;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-
 namespace TDL.Client
 {
     public partial class QueueBasedImplementationRunner
@@ -12,7 +11,7 @@ namespace TDL.Client
         public class Builder
         {
             private ProcessingRules deployProcessingRules;
-            private ImplementationRunnerConfig config;
+            private ImplementationRunnerConfig? config; // Make config nullable
 
             public Builder()
             {
@@ -36,6 +35,10 @@ namespace TDL.Client
 
             public QueueBasedImplementationRunner Create()
             {
+                if (config == null)
+                {
+                    throw new InvalidOperationException("Config must be set before creating the runner.");
+                }
                 return new QueueBasedImplementationRunner(config, deployProcessingRules);
             }
 
