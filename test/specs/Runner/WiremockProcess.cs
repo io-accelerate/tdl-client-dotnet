@@ -47,7 +47,7 @@ namespace TDL.Test.Specs.Runner
                 Method = verb
             };
 
-            if (body != null)
+            if (!String.IsNullOrEmpty(body))
             {
                 requestData.BodyPatterns = new[]
                 {
