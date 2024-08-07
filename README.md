@@ -68,11 +68,11 @@ Run the all tests
 dotnet test
 ```
 
-Run individual scenario. Add @wip to the desired test, then:
+Run individual scenarios
 ```shell
-dotnet test --filter Category=wip
+dotnet test --list-tests
+dotnet test --filter TheServerInteraction
 ```
-
 
 # To release
 

@@ -20,7 +20,7 @@ namespace TDL.Test.Specs.Runner
 
         public void CreateNewMapping(ServerConfig config)
         {
-            var request = new RestRequest("__admin/mappings/new", Method.Post);
+            var request = new RestRequest("__admin/mappings", Method.Post);
             request.AddJsonBody(new WiremockMapping(config));
 
             restClient.Execute(request);
