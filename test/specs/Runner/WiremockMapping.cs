@@ -42,10 +42,10 @@ namespace TDL.Test.Specs.Runner
     internal class WiremockMappingResponse
     {
         [JsonProperty("body")]
-        public string Body { get; set; }
+        public required string Body { get; set; }
 
         [JsonProperty("statusMessage")]
-        public string StatusMessage { get; set; }
+        public required string StatusMessage { get; set; }
 
         [JsonProperty("status")]
         public int Status { get; set; }
@@ -54,49 +54,49 @@ namespace TDL.Test.Specs.Runner
     internal class WiremockMappingRequest
     {
         [JsonProperty("urlPattern")]
-        public string UrlPattern { get; set; }
+        public required string UrlPattern { get; set; }
 
         [JsonProperty("url")]
-        public string Url { get; set; }
+        public required string Url { get; set; }
 
         [JsonProperty("method")]
-        public string Method { get; set; }
+        public required string Method { get; set; }
 
         [JsonProperty("headers")]
-        public WiremockMappingHeader Headers { get; set; }
+        public WiremockMappingHeader? Headers { get; set; }
     }
 
     internal class WiremockMappingHeader
     {
         [JsonProperty("Accept")]
-        public WiremockMappingHeaderAccept Accept { get; set; }
+        public required WiremockMappingHeaderAccept Accept { get; set; }
     }
 
     internal class WiremockMappingHeaderAccept
     {
         [JsonProperty("contains")]
-        public string Contains { get; set; }
+        public required string Contains { get; set; }
     }
 
     internal class MatchingDataRequest
     {
         [JsonProperty("urlPattern")]
-        public string UrlPattern { get; set; }
+        public string? UrlPattern { get; set; }
 
         [JsonProperty("url")]
-        public string Url { get; set; }
+        public required string Url { get; set; }
 
         [JsonProperty("method")]
-        public string Method { get; set; }
+        public required string Method { get; set; }
 
         [JsonProperty("bodyPatterns")]
-        public MatchingDataRequestBodyPattern[] BodyPatterns { get; set; }
+        public MatchingDataRequestBodyPattern[]? BodyPatterns { get; set; }
     }
 
     internal class MatchingDataRequestBodyPattern
     {
         [JsonProperty("equalTo")]
-        public string EqualTo { get; set; }
+        public required string EqualTo { get; set; }
     }
 
     internal class MatchingDataResponse

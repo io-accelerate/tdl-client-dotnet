@@ -24,10 +24,10 @@ namespace TDL.Test.Specs.Queue
         private readonly LogAuditStream auditStream = new(new ConsoleAuditStream());
         private readonly RemoteJmxBroker broker = TestBroker.Instance;
 
-        private RemoteJmxQueue requestQueue;
-        private RemoteJmxQueue responseQueue;
-        private QueueBasedImplementationRunner queueBasedImplementationRunner;
-        private QueueBasedImplementationRunner.Builder queueBasedImplementationRunnerBuilder;
+        private RemoteJmxQueue requestQueue = new(JolokiaSession.Connect("unset", 7777), "unset", "unset");
+        private RemoteJmxQueue responseQueue = new(JolokiaSession.Connect("unset", 7777), "unset", "unset");
+        private QueueBasedImplementationRunner? queueBasedImplementationRunner;
+        private QueueBasedImplementationRunner.Builder queueBasedImplementationRunnerBuilder = new();
 
         private long requestCount;
         private long processingTimeMillis = 0;
@@ -120,8 +120,10 @@ namespace TDL.Test.Specs.Queue
         [Then(@"^the time to wait for requests is (\d+)ms$")]
         public void ThenTheTimeToWaitForRequestsIs(int expectedTimeout)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             Assert.That(queueBasedImplementationRunner.RequestTimeoutMilliseconds, Is.EqualTo(expectedTimeout),
                 "The client request timeout has a different value.");
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         [Then(@"^the request queue is ""([^""]*)""$")]
