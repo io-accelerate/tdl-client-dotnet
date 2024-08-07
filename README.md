@@ -39,55 +39,32 @@ dotnet build --configuration Debug --property:TargetFrameworkVersion=v4.5
 
 
 
-
-
 # Testing
-
-## Manual 
-All test require the ActiveMQ broker to be started.
-The following commands are available for the broker.
-
-```bash
-python ./broker/activemq-wrapper.py start
-python wiremock/wiremock-wrapper.py start 41375
-python wiremock/wiremock-wrapper.py start 8222
-```
-
-## Automatic (via script)
-
-Start and stop the wiremocks and broker services with the below:
  
-```bash
-./startExternalDependencies.sh
-``` 
+All test require the ActiveMQ broker and Wiremock to be started.
 
-```bash
-./stopExternalDependencies.sh
-``` 
-
-## Run tests using mono
-
-```bash
-  mono ./packages/NUnit.ConsoleRunner.3.8.0/tools/nunit3-console.exe  \
-          --result=test-report.xml                                    \
-          ./test/specs/bin/Debug/TDL.Test.Specs.dll
+Start ActiveMQ
+```shell
+export ACTIVEMQ_CONTAINER=apache/activemq-classic:6.1.0
+docker run -d -it --rm -p 28161:8161 -p 21613:61613 --name activemq ${ACTIVEMQ_CONTAINER}
 ```
 
-# Cleanup
+The ActiveMQ web UI can be accessed at:
+http://localhost:28161/admin/
+use admin/admin to login
 
-Stop external dependencies
-
-```bash
-python ./broker/activemq-wrapper.py stop
-python wiremock/wiremock-wrapper.py stop 41375
-python wiremock/wiremock-wrapper.py stop 8222
+Start two Wiremock servers
+```shell
+export WIREMOCK_CONTAINER=wiremock/wiremock:3.7.0
+docker run -d -it --rm -p 8222:8080 --name challenge-server ${WIREMOCK_CONTAINER}
+docker run -d -it --rm -p 41375:8080 --name recording-server ${WIREMOCK_CONTAINER}
 ```
 
-or run the below script
+The Wiremock admin UI can be found at:
+http://localhost:8222/__admin/
+and docs at
+http://localhost:8222/__admin/docs
 
-```bash
-./stopExternalDependencies.sh
-``` 
 
 # To release
 

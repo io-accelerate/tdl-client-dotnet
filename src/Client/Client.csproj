@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
+    <IsTestProject>false</IsTestProject>
 
     <!-- Assembly Metadata -->
     <AssemblyTitle>TDL.ClientTest</AssemblyTitle>

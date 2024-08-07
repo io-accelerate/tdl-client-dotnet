@@ -41,6 +41,7 @@ namespace TDL.Test.Specs.Utils.Jmx.Broker
             };
 
             request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Origin", "http://localhost");
             request.AddJsonBody(jolokiaPayload);
 
             var response = restClient.Execute<JolokiaResponse<T>>(request);

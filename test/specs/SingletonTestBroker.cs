@@ -6,7 +6,7 @@ namespace TDL.Test.Specs
     {
         private const string Hostname = "localhost";
         private const int JmxPort = 28161;
-        private const string BrokerName = "TEST.BROKER";
+        private const string BrokerName = "localhost";
 
         public static RemoteJmxBroker Instance { get; }
 
