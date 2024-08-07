@@ -164,7 +164,7 @@ namespace TDL.Test.Specs.Runner
         [Then(@"the server interaction should look like:")]
         public void ThenTheServerInteractionShouldLookLike(string expectedOutput)
         {
-            var total = auditStream.ToString();
+            var total = auditStream?.ToString() ?? "";
             total = total.TrimEnd(Environment.NewLine.ToCharArray()).Replace("\\", "/");
             Assert.That(total, Does.Contain(expectedOutput), "Expected string is not contained in output");
         }
@@ -214,7 +214,7 @@ namespace TDL.Test.Specs.Runner
         public void ThenTheClientShouldNotAskTheUserForInput()
         {
             var total = auditStream.ToString();
-            Assert.IsFalse(total.Contains("Selected action is:"));
+            Assert.That(total, Does.Not.Contain("Selected action is:"));
         }
     }
 }

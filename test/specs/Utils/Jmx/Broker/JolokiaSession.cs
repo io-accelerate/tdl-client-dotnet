@@ -52,12 +52,15 @@ namespace TDL.Test.Specs.Utils.Jmx.Broker
             if (response.Data != null)
             {
                 ValidateResponse(response.Data.Status, $"{response.Data.ErrorType}: {response.Data.Error}");
+                return response.Data;
+            } 
+            else 
+            {
+                 throw new Exception($"Failed Jolokia call: response.Data is null");
             }
-
-            return response.Data;
         }
 
-        private static void ValidateResponse(HttpStatusCode responseStatusCode, string content)
+        private static void ValidateResponse(HttpStatusCode responseStatusCode, string? content)
         {
             if (responseStatusCode != HttpStatusCode.OK)
             {
