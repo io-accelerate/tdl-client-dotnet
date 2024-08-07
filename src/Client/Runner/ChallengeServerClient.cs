@@ -73,11 +73,6 @@ namespace TDL.Client.Runner
                 return;
             }
 
-            if (response.StatusCode == HttpStatusCode.InternalServerError || response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                throw new OtherCommunicationException(response.Content);
-            }
-
             var responseStatus = (int)response.StatusCode;
             if (IsClientError(responseStatus))
             {
