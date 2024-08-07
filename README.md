@@ -36,9 +36,6 @@ Need to run the below commands:
 dotnet build --configuration Debug --property:TargetFrameworkVersion=v4.5
 ```
 
-
-
-
 # Testing
  
 All test require the ActiveMQ broker and Wiremock to be started.
@@ -46,7 +43,7 @@ All test require the ActiveMQ broker and Wiremock to be started.
 Start ActiveMQ
 ```shell
 export ACTIVEMQ_CONTAINER=apache/activemq-classic:6.1.0
-docker run -d -it --rm -p 28161:8161 -p 21613:61613 --name activemq ${ACTIVEMQ_CONTAINER}
+docker run -d -it --rm -p 28161:8161 -p 21616:61616 --name activemq ${ACTIVEMQ_CONTAINER}
 ```
 
 The ActiveMQ web UI can be accessed at:
@@ -64,6 +61,17 @@ The Wiremock admin UI can be found at:
 http://localhost:8222/__admin/
 and docs at
 http://localhost:8222/__admin/docs
+
+
+Run the all tests
+```shell
+dotnet test
+```
+
+Run individual scenario. Add @wip to the desired test, then:
+```shell
+dotnet test --filter Category=wip
+```
 
 
 # To release
