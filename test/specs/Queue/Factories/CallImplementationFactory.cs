@@ -9,7 +9,7 @@ namespace TDL.Test.Specs.Queue.Factories
     internal static class CallImplementationFactory
     {
         private static readonly Dictionary<string, Func<List<JToken>, object>> CallImplementations =
-            new Dictionary<string, Func<List<JToken>, object>>
+            new()
             {
                 ["add two numbers"] = args =>
                     (int)args[0] + (int)args[1],

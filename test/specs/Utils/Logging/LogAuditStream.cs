@@ -5,7 +5,7 @@ namespace TDL.Test.Specs.Utils.Logging
 {
     public class LogAuditStream : IAuditStream
     {
-        private readonly StringBuilder log = new StringBuilder();
+        private readonly StringBuilder log = new();
         private readonly IAuditStream originalStream;
 
         public LogAuditStream(IAuditStream originalStream)

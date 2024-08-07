@@ -16,7 +16,7 @@ namespace TDL.Client.Runner
     {
         private const string RecordingSystemEndpoint = "http://localhost:41375";
 
-        private static readonly RestClient RestClient = new RestClient(new RestClientOptions(RecordingSystemEndpoint));
+        private static readonly RestClient RestClient = new(new RestClientOptions(RecordingSystemEndpoint));
 
         private bool recordingRequired;
 

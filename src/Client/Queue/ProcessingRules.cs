@@ -8,9 +8,9 @@ namespace TDL.Client.Queue
 {
     public partial class ProcessingRules
     {
-        private readonly Dictionary<string, ProcessingRule> rules = new Dictionary<string, ProcessingRule>();
+        private readonly Dictionary<string, ProcessingRule> rules = new();
 
-        public Builder On(string methodName) => new Builder(methodName, this);
+        public Builder On(string methodName) => new(methodName, this);
 
         private void Add(
             string methodName,

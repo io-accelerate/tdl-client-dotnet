@@ -18,7 +18,7 @@ namespace TDL.Client.Queue.Serialization
             JsonConvert.SerializeObject(From(response));
 
         private static ResponseJson From(IResponse response) =>
-            new ResponseJson
+            new()
             {
                 Result = response.Result,
                 Error = null,

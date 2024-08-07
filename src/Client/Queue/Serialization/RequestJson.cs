@@ -17,7 +17,7 @@ namespace TDL.Client.Queue.Serialization
         public string Id { get; set; }
 
         public Request To() =>
-            new Request
+            new()
             {
                 MethodName = MethodName,
                 Params = Params,
@@ -29,7 +29,7 @@ namespace TDL.Client.Queue.Serialization
             try
             {
                 JObject parseResult = JObject.Parse(value);
-                RequestJson request = new RequestJson();
+                RequestJson request = new();
                 request.MethodName = (string)parseResult["method"];
                 request.Params = new List<JToken>();
                 foreach (JToken param in parseResult["params"].Children())

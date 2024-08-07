@@ -59,7 +59,7 @@ namespace TDL.Test.Specs.Utils.Jmx.Broker
                 ["mbean"] = queueBean,
                 ["operation"] = "browse()"
             });
-            return response.Value.Select(i => i.Text).ToList();
+            return response.Value.Select(static i => i.Text).ToList();
         }
     }
 }

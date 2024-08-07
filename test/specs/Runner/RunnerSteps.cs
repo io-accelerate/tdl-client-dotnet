@@ -17,15 +17,15 @@ namespace TDL.Test.Specs.Runner
     [Binding]
     public class RunnerSteps
     {
-        private WiremockProcess challengeServerStub;
-        private WiremockProcess recordingServerStub;
-        private string challengeHostname;
+        private WiremockProcess challengeServerStub = new("unset", 9999);
+        private WiremockProcess recordingServerStub = new("unset", 8888);
+        private string challengeHostname = "unset";
         private int port;
         private readonly IAuditStream auditStream = new TestAuditStream();
         private IImplementationRunner implementationRunner = new QuietImplementationRunner();
-        private string implementationRunnerMessage;
-        private string journeyId;
-        private TestActionProvider actionProviderCallback = new TestActionProvider();
+        private string implementationRunnerMessage = "unset";
+        private string journeyId = "unset";
+        private readonly TestActionProvider actionProviderCallback = new();
 
         [Given(@"There is a challenge server running on ""(.*)"" port (.*)")]
         public void GivenThereIsAChallengeServerRunningOnPort(string hostname, int port)
@@ -166,7 +166,7 @@ namespace TDL.Test.Specs.Runner
         {
             var total = auditStream.ToString();
             total = total.TrimEnd(Environment.NewLine.ToCharArray()).Replace("\\", "/");
-            Assert.IsTrue(total.Contains(expectedOutput), "Expected string is not contained in output");
+            Assert.That(total, Does.Contain(expectedOutput), "Expected string is not contained in output");
         }
 
         [Then(@"the file ""(.*)"" should contain")]
@@ -177,26 +177,26 @@ namespace TDL.Test.Specs.Runner
 
             text = text.TrimEnd(Environment.NewLine.ToCharArray());
 
-            Assert.AreEqual(text, fileContent, "Contents of the file is not what is expected");
+            Assert.That(fileContent, Is.EqualTo(text), "Contents of the file is not what is expected");
         }
 
         [Then(@"the recording system should be notified with ""(.*)""")]
         public void ThenTheRecordingSystemShouldBeNotifiedWith(string expectedOutput)
         {
-            Assert.IsTrue(recordingServerStub.EndpointWasHit("/notify", "POST", expectedOutput));
+            Assert.That(recordingServerStub.EndpointWasHit("/notify", "POST", expectedOutput), Is.True);
         }
 
         [Then(@"the recording system should have received a stop signal")]
         public void ThenTheRecordingSystemShouldReceiveStopSignal()
         {
-            Assert.IsTrue(recordingServerStub.EndpointWasHit("/stop", "POST", ""));
+            Assert.That(recordingServerStub.EndpointWasHit("/stop", "POST", ""), Is.True);
         }
 
         [Then(@"the implementation runner should be run with the provided implementations")]
         public void ThenTheImplementationRunnerShouldBeRunWithTheProvidedImplementations()
         {
             var total = auditStream.ToString();
-            Assert.IsTrue(total.Contains(implementationRunnerMessage));
+            Assert.That(total, Does.Contain(implementationRunnerMessage));
         }
 
         [Then(@"the server interaction should contain the following lines:")]
@@ -206,7 +206,7 @@ namespace TDL.Test.Specs.Runner
             var lines = expectedOutput.Split('\n');
             foreach (var line in lines)
             {
-                Assert.IsTrue(total.Contains(line), "Expected string is not contained in output");
+                Assert.That(total, Does.Contain(line), "Expected string is not contained in output");
             }
         }
 

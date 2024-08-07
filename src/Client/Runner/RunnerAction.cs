@@ -9,8 +9,8 @@
             ShortName = shortName;
         }
 
-        public static readonly RunnerAction GetNewRoundDescription = new RunnerAction("new");
-        public static readonly RunnerAction DeployToProduction = new RunnerAction("deploy");
+        public static readonly RunnerAction GetNewRoundDescription = new("new");
+        public static readonly RunnerAction DeployToProduction = new("deploy");
 
         public static readonly RunnerAction[] AllActions =
         {

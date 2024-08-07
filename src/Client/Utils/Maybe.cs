@@ -18,7 +18,7 @@ namespace TDL.Client.Utils
             return new Maybe<T>(new[] {value});
         }
 
-        public static Maybe<T> None => new Maybe<T>(new T[0]);
+        public static Maybe<T> None => new(new T[0]);
 
         public bool HasValue => values != null && values.Any();
 

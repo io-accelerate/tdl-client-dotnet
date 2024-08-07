@@ -21,7 +21,7 @@ namespace TDL.Test.Specs.Queue
         private const string RequestQueueName = "some-user-req";
         private const string ResponseQueueName = "some-user-resp";
 
-        private readonly LogAuditStream auditStream = new LogAuditStream(new ConsoleAuditStream());
+        private readonly LogAuditStream auditStream = new(new ConsoleAuditStream());
         private readonly RemoteJmxBroker broker = TestBroker.Instance;
 
         private RemoteJmxQueue requestQueue;
@@ -120,28 +120,28 @@ namespace TDL.Test.Specs.Queue
         [Then(@"^the time to wait for requests is (\d+)ms$")]
         public void ThenTheTimeToWaitForRequestsIs(int expectedTimeout)
         {
-            Assert.AreEqual(expectedTimeout, queueBasedImplementationRunner.RequestTimeoutMilliseconds,
+            Assert.That(queueBasedImplementationRunner.RequestTimeoutMilliseconds, Is.EqualTo(expectedTimeout),
                 "The client request timeout has a different value.");
         }
 
         [Then(@"^the request queue is ""([^""]*)""$")]
         public void ThenTheRequestQueueIs(string expectedName)
         {
-            Assert.AreEqual(expectedName, requestQueue.Name,
+            Assert.That(requestQueue.Name, Is.EqualTo(expectedName),
                 "Request queue has a different value.");
         }
 
         [Then(@"^the response queue is ""([^""]*)""$")]
         public void ThenTheResponseQueyeIs(string expectedName)
         {
-            Assert.AreEqual(expectedName, responseQueue.Name,
+            Assert.That(responseQueue.Name, Is.EqualTo(expectedName),
                 "Response queue has a different value.");
         }
 
         [Then(@"the client should consume all requests")]
         public void ThenTheClientShouldConsumeAllRequests()
         {
-            Assert.AreEqual(0, requestQueue.GetSize(),
+            Assert.That(requestQueue.GetSize(), Is.EqualTo(0),
                 "Requests have not been consumed.");
         }
 
@@ -150,42 +150,42 @@ namespace TDL.Test.Specs.Queue
         {
             var expectedResponses = table.CreateSet<PayloadSpecItem>().Select(i => i.Payload).ToList();
             var actualResponses = responseQueue.GetMessageContents();
-            Assert.IsTrue(expectedResponses.SequenceEqual(actualResponses),
+            Assert.That(expectedResponses.SequenceEqual(actualResponses), Is.True,
                 "The responses are not correct");
         }
 
         [Then(@"the client should not consume any request")]
         public void ThenTheClientShouldNotConsumeAnyRequest()
         {
-            Assert.AreEqual(requestCount, requestQueue.GetSize(),
+            Assert.That(requestQueue.GetSize(), Is.EqualTo(requestCount),
                 "The request queue has different size. The message has been consumed.");
         }
 
         [Then(@"the client should not publish any response")]
         public void ThenTheClientShouldNotPublishAnyResponse()
         {
-            Assert.AreEqual(0, responseQueue.GetSize(),
+            Assert.That(responseQueue.GetSize(), Is.EqualTo(0),
                 "The response queue has different size. Messages have been published.");
         }
 
         [Then(@"the client should consume one request")]
         public void ThenTheClientShouldConsumeOneRequest()
         {
-            Assert.AreEqual(requestCount - 1, requestQueue.GetSize(),
+            Assert.That(requestQueue.GetSize(), Is.EqualTo(requestCount - 1),
                 "The request queue has different size. More than one messages have been consumed.");
         }
 
         [Then(@"the client should consume first request")]
         public void ThenTheClientShouldConsumeFirstRequest()
         {
-            Assert.AreEqual(requestCount - 1, requestQueue.GetSize(),
+            Assert.That(requestQueue.GetSize(), Is.EqualTo(requestCount - 1),
                 "Wrong number of requests have been consumed.");
         }
 
         [Then(@"the client should publish one response")]
         public void ThenTheClientShouldPublishOneResponse()
         {
-            Assert.AreEqual(requestCount - 2, responseQueue.GetSize(),
+            Assert.That(responseQueue.GetSize(), Is.EqualTo(requestCount - 2),
                 "Wrong number of responses have been received.");
         }
 
@@ -197,7 +197,7 @@ namespace TDL.Test.Specs.Queue
 
             expectedOutputs.ForEach(expectedLine =>
             {
-                Assert.IsTrue(actualOutput.Contains(expectedLine.Output));
+                Assert.That(actualOutput, Does.Contain(expectedLine.Output));
             });
         }
 

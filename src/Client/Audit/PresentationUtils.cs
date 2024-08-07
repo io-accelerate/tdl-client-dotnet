@@ -13,7 +13,7 @@ namespace TDL.Client.Audit
     {
         public static string ToDisplayableRequest(this List<JToken> items)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (JToken item in items) 
             {
                 if (sb.Length > 0)
