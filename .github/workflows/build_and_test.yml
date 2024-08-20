@@ -1,4 +1,4 @@
-name: Python behave test
+name: Dotnet SpecFlow test
 
 on: [push]
 
@@ -25,11 +25,12 @@ jobs:
         with:
           submodules: 'true'
 
-      # ~~~~~~~~~~~~~ Python setup ~~~~~~~~~~~~~
-      - name: Set up Dotnet
-        uses: actions/setup-dotnet@v3
+      # ~~~~~~~~~~~~~ .Net setup ~~~~~~~~~~~~~
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0'
+          cache: true
       - name: Install dependencies
         run: dotnet restore
       - name: Build
