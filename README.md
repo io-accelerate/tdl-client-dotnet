@@ -74,12 +74,32 @@ dotnet test --list-tests
 dotnet test --filter TheServerInteraction
 ```
 
+# Cleanup
+
+Stop dependencies
+```
+docker stop activemq
+docker stop recording-server
+docker stop challenge-server
+```
+
 # To release
 
 Run
 
 ```bash
 ./release.sh
+```
+
+## To manually build the NuGet files
+
+```bash
+dotnet clean
+dotnet build --configuration Release src/Client/
+dotnet pack --configuration Release src/Client
+
+export NUGET_TOKEN=<value from https://www.nuget.org/account/apikeys>
+dotnet nuget push src/Client/bin/Release/*.nupkg --api-key "$NUGET_TOKEN" --source https://api.nuget.org/v3/index.json
 ```
 
 # Hack and gotchas `.Net`
