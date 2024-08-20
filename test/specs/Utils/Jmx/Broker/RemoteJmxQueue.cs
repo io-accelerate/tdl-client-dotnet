@@ -59,7 +59,17 @@ namespace TDL.Test.Specs.Utils.Jmx.Broker
                 ["mbean"] = queueBean,
                 ["operation"] = "browse()"
             });
-            return response.Value.Select(static i => i.Text).ToList();
-        }
+            // Ensure response.Value is not null before processing it
+            if (response?.Value == null)
+            {
+                return new List<string>();
+            }
+
+            // Filter out any null items in the Text property and return a List<string>
+            return response.Value
+                .Where(static i => i.Text != null)
+                .Select(static i => i.Text!)
+                .ToList();
+                }
     }
 }

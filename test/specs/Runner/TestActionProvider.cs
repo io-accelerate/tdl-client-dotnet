@@ -4,7 +4,7 @@ namespace TDL.Test.Specs.Runner
 {
     public class TestActionProvider : IActionProvider
     {
-        private string value = null;
+        private string value = null!;
 
         public string Get()
         {

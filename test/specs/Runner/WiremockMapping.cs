@@ -14,9 +14,9 @@ namespace TDL.Test.Specs.Runner
         {
             Request = new WiremockMappingRequest
             {
-                UrlPattern = config.EndpointMatches,
-                Url = config.EndpointEquals,
-                Method = config.Verb
+                UrlPattern = config.EndpointMatches!,
+                Url = config.EndpointEquals!,
+                Method = config.Verb!
             };
 
             if (config.AcceptHeader != null)
@@ -32,8 +32,8 @@ namespace TDL.Test.Specs.Runner
 
             Response = new WiremockMappingResponse
             {
-                Body = config.ResponseBody,
-                StatusMessage = config.StatusMessage,
+                Body = config.ResponseBody!,
+                StatusMessage = config.StatusMessage!,
                 Status = config.Status
             };
         }

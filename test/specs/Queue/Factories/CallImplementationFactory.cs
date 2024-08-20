@@ -16,11 +16,11 @@ namespace TDL.Test.Specs.Queue.Factories
                 ["increment number"] = args =>
                     (int)args[0] + 1,
                 ["return null"] = args =>
-                    null,
+                    null!,
                 ["throw exception"] = args =>
                     throw new InvalidOperationException("faulty user code"),
                 ["replay the value"] = args =>
-                    (string)args[0],
+                    (string)args[0]!,
                 ["sum the elements of an array"] = args =>
                 {
                     JArray intArray = (JArray)args[0];
