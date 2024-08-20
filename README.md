@@ -94,7 +94,8 @@ Run
 ## To manually build the NuGet files
 
 ```bash
-dotnet clean
+rm -f src/Client/bin/Release/*.nupkg
+
 dotnet build --configuration Release src/Client/
 dotnet pack --configuration Release src/Client
 
