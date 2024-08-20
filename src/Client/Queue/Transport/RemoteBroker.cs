@@ -62,7 +62,7 @@ namespace TDL.Client.Queue.Transport
             var textMessage = session.CreateTextMessage(serializedResponse);
             messageProducer.Send(textMessage);
 
-            request.TextMessage.Acknowledge();
+            request.TextMessage?.Acknowledge();
         }
 
         public void Dispose()

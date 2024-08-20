@@ -18,6 +18,7 @@ namespace TDL.Client.Runner
 
         private ChallengeSessionConfig(string journeyId)
         {
+            Hostname = "localhost";
             Port = 8222;
             UseColours = true;
             RecordingSystemShouldBeOn = true;

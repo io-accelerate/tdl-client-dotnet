@@ -8,13 +8,13 @@ namespace TDL.Client.Queue.Serialization
     public class RequestJson
     {
         [JsonProperty("method")]
-        public string MethodName { get; set; }
+        public required string MethodName { get; set; }
 
         [JsonProperty("params")]
-        public List<JToken> Params { get; set; }
+        public required List<JToken> Params { get; set; }
 
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public required string Id { get; set; }
 
         public Request To() =>
             new()
@@ -29,14 +29,26 @@ namespace TDL.Client.Queue.Serialization
             try
             {
                 JObject parseResult = JObject.Parse(value);
-                RequestJson request = new();
-                request.MethodName = (string)parseResult["method"];
-                request.Params = new List<JToken>();
-                foreach (JToken param in parseResult["params"].Children())
+
+                // Check if "method" and "id" exist and are not null
+                string methodName = (string?)parseResult["method"] ?? throw new DeserializationException("Method name is missing or null.");
+                string id = (string?)parseResult["id"]  ?? throw new DeserializationException("ID is missing or null.");
+
+                RequestJson request = new()
                 {
-                    request.Params.Add(param);
+                    Id = id,
+                    MethodName = methodName,
+                    Params = []
+                };
+
+                if (parseResult["params"] != null)
+                {
+                    foreach (JToken param in parseResult["params"]!.Children())
+                    {
+                        request.Params.Add(param);
+                    }
                 }
-                request.Id = (string)parseResult["id"];
+          
                 return request;
             }
             catch (JsonReaderException ex)

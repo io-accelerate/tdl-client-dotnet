@@ -11,7 +11,7 @@ namespace TDL.Client.Queue
             private readonly ProcessingRules processingRules;
             private readonly string methodName;
 
-            private Func<List<JToken>, object> userImplementation;
+            private Func<List<JToken>, object>? userImplementation;
 
             public Builder(string methodName, ProcessingRules processingRules)
             {
@@ -27,7 +27,10 @@ namespace TDL.Client.Queue
 
             public void Build()
             {
-                processingRules.Add(methodName, userImplementation);
+                if (userImplementation is not null) 
+                {
+                    processingRules.Add(methodName, userImplementation);
+                }
             }
         }
     }

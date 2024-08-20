@@ -10,8 +10,8 @@ namespace TDL.Client
     {
         public class Builder
         {
-            private ProcessingRules deployProcessingRules;
-            private ImplementationRunnerConfig? config; // Make config nullable
+            private readonly ProcessingRules deployProcessingRules;
+            private ImplementationRunnerConfig? config;
 
             public Builder()
             {
@@ -35,7 +35,7 @@ namespace TDL.Client
 
             public QueueBasedImplementationRunner Create()
             {
-                if (config == null)
+                if (config is null)
                 {
                     throw new InvalidOperationException("Config must be set before creating the runner.");
                 }

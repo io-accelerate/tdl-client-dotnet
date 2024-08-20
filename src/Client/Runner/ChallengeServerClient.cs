@@ -46,7 +46,7 @@ namespace TDL.Client.Runner
 
             var response = restClient.Execute(request);
             EnsureStatusOk(response);
-            return response.Content;
+            return response.Content ?? "";
         }
 
         //~~~~~~~ POST ~~~~~~~~
@@ -61,7 +61,7 @@ namespace TDL.Client.Runner
 
             var response = restClient.Execute(request);
             EnsureStatusOk(response);
-            return response.Content;
+            return response.Content ?? "";
         }
 
         //~~~~~~~ Error handling ~~~~~~~~~
@@ -76,15 +76,15 @@ namespace TDL.Client.Runner
             var responseStatus = (int)response.StatusCode;
             if (IsClientError(responseStatus))
             {
-                throw new ClientErrorException(response.Content);
+                throw new ClientErrorException(response.Content ?? "");
             }
             else if (IsServerError(responseStatus))
             {
-                throw new ServerErrorException(response.StatusDescription);
+                throw new ServerErrorException(response.StatusDescription ?? "");
             }
             else if (IsOtherErrorResponse(responseStatus))
             {
-                throw new OtherCommunicationException(response.StatusDescription);
+                throw new OtherCommunicationException(response.StatusDescription ?? "");
             }
         }
 

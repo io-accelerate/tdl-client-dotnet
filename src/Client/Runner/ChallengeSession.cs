@@ -5,11 +5,11 @@ namespace TDL.Client.Runner
 {
     public class ChallengeSession
     {
-        private ChallengeSessionConfig config;
-        private IImplementationRunner implementationRunner;
-        private RecordingSystem recordingSystem;
-        private ChallengeServerClient challengeServerClient;
-        private IActionProvider userInputCallback;
+        private ChallengeSessionConfig? config;
+        private readonly IImplementationRunner implementationRunner;
+        private RecordingSystem? recordingSystem;
+        private ChallengeServerClient? challengeServerClient;
+        private IActionProvider? userInputCallback;
 
         public static ChallengeSession ForRunner(IImplementationRunner implementationRunner)
         {
@@ -38,6 +38,10 @@ namespace TDL.Client.Runner
         /// </summary>
         public void Start()
         {
+            if (config is null) {
+                throw new System.InvalidOperationException("Challenge session has not been configured.");
+            }
+
             recordingSystem = new RecordingSystem(config.RecordingSystemShouldBeOn);
             var auditStream = config.AuditStream;
 
@@ -55,6 +59,10 @@ namespace TDL.Client.Runner
 
         private void RunApp()
         {
+            if (config is null || recordingSystem is null || userInputCallback is null) {
+                throw new System.InvalidOperationException("Challenge session has not been configured.");
+            }
+
             var auditStream = config.AuditStream;
             challengeServerClient = new ChallengeServerClient(config.Hostname, config.Port, config.JourneyId, config.UseColours);
 
@@ -117,6 +125,10 @@ namespace TDL.Client.Runner
 
         private string ExecuteAction(String userInput)
         {
+            if (config is null || recordingSystem is null || challengeServerClient is null) {
+                throw new System.InvalidOperationException("Challenge session has not been configured.");
+            }
+
             var actionFeedback = challengeServerClient.SendAction(userInput);
             config.AuditStream.WriteLine(actionFeedback);
             if (actionFeedback.Contains("Round time for")) {
