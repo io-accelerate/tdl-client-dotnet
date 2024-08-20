@@ -212,7 +212,7 @@ namespace TDL.Test.Specs.Queue
         [Then(@"^the processing time should be lower than (\d+)ms$")]
         public void ProccessingTimeShouldBeLowerThanMs(long threshold)
         {
-            Assert.Less(processingTimeMillis, threshold);
+            Assert.That(processingTimeMillis,  Is.LessThan(threshold));
         }
     }
 }
