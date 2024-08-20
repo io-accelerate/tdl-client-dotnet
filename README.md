@@ -92,6 +92,10 @@ Set version manually in `src/Client/Client.csproj`:
 
 Commit the changes
 ```
+export RELEASE_TAG="v$(cat src/Client/Client.csproj | grep PackageVersion | cut -d ">" -f2 | cut -d "<" -f1)"
+
+git add --all
+git commit -m "Releasing version ${RELEASE_TAG}"
 
 ```
 
