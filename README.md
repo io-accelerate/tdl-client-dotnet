@@ -97,6 +97,9 @@ export RELEASE_TAG="v$(cat src/Client/Client.csproj | grep PackageVersion | cut 
 git add --all
 git commit -m "Releasing version ${RELEASE_TAG}"
 
+git push
+git tag -a "${RELEASE_TAG}" -m "${RELEASE_TAG}"
+git push --tags
 ```
 
 ## To manually build the NuGet files
