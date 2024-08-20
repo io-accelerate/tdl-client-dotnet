@@ -29,13 +29,6 @@ Dotnet client to connect to the central kata server.
 dotnet restore
 ```
 
-## Building project using mono
-
-Need to run the below commands:
-```bash
-dotnet build --configuration Debug --property:TargetFrameworkVersion=v4.5
-```
-
 # Testing
  
 All test require the ActiveMQ broker and Wiremock to be started.
