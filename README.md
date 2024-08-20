@@ -85,10 +85,14 @@ docker stop challenge-server
 
 # To release
 
-Run
+Set version manually in `src/Client/Client.csproj`:
+```
+    <PackageVersion>0.X.Y</PackageVersion>
+```
 
-```bash
-./release.sh
+Commit the changes
+```
+
 ```
 
 ## To manually build the NuGet files
