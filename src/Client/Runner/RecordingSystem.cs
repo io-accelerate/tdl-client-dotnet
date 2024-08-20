@@ -71,14 +71,15 @@ namespace TDL.Client.Runner
                 var request = new RestRequest(endpoint, Method.Post);
                 request.AddBody(body); // Updated method for adding body content
                 var response = RestClient.Execute(request);
+                var responseContent = response.Content ?? "";
 
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     Console.WriteLine($"Recording system returned code: {response.StatusCode}");
                 }
-                else if (!response.Content.StartsWith("ACK", StringComparison.Ordinal))
+                else if (!responseContent.StartsWith("ACK", StringComparison.Ordinal))
                 {
-                    Console.WriteLine($"Recording system returned body: {response.Content}");
+                    Console.WriteLine($"Recording system returned body: {responseContent}");
                 }
             }
             catch (Exception e)

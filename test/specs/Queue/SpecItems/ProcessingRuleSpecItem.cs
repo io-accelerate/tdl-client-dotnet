@@ -2,10 +2,10 @@
 {
     internal class ProcessingRuleSpecItem
     {
-        public string Method { get; set; }
+        public required string Method { get; set; }
 
-        public string Call { get; set; }
+        public required string Call { get; set; }
 
-        public string Action { get; set; }
+        public required string Action { get; set; }
     }
 }

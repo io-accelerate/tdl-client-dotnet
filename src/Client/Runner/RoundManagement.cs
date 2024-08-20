@@ -55,7 +55,7 @@ namespace TDL.Client.Runner
 
         public static string GetLastFetchedRound() =>
             File.Exists(LastFetchedRoundPath)
-                ? File.ReadLines(LastFetchedRoundPath, Encoding.Default).FirstOrDefault()
+                ? File.ReadLines(LastFetchedRoundPath, Encoding.Default).FirstOrDefault("noRound")
                 : "noRound";
 
         private static void WriteAllTextWithFlush(string path, string contents)

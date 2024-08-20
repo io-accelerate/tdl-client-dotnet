@@ -2,6 +2,6 @@
 {
     internal class OutputSpecItem
     {
-        public string Output { get; set; }
+        public required string Output { get; set; }
     }
 }

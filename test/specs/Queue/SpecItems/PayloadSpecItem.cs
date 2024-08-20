@@ -2,6 +2,6 @@
 {
     internal class PayloadSpecItem
     {
-        public string Payload { get; set; }
+        public required string Payload { get; set; }
     }
 }
