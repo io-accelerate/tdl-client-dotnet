@@ -34,4 +34,4 @@ jobs:
       - name: Publish the package to NuGet
         run: dotnet nuget push src/Client/bin/Release/*.nupkg --api-key "$NUGET_TOKEN" --source https://api.nuget.org/v3/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}
+          NUGET_TOKEN: ${{secrets.NUGET_TOKEN}}
