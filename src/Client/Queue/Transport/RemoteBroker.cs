@@ -16,6 +16,7 @@ namespace TDL.Client.Queue.Transport
         private readonly IMessageProducer messageProducer;
         private readonly long timeout;
         private readonly JsonSerializer jsonSerializer;
+        private readonly ISerializationProvider serializationProvider;
 
         public RemoteBroker(
             string hostname,
@@ -40,34 +41,29 @@ namespace TDL.Client.Queue.Transport
             connection.Start();
 
             messageProducer.DeliveryMode = MsgDeliveryMode.NonPersistent;
+
+            serializationProvider = new JsonRpcSerializationProvider(jsonSerializer);
         }
 
         public Maybe<Request> Receive()
         {
             var textMessage = (ITextMessage) messageConsumer.Receive(TimeSpan.FromMilliseconds(timeout));
-            if (textMessage == null)
+            
+            Request? request = serializationProvider.Deserialize(textMessage);
+
+            if (request == null)
             {
                 return Maybe<Request>.None;
             }
-
-            var requestJson = RequestJson.Deserialize(textMessage.Text);
-            List<ParamAccessor> paramAccessors = requestJson.Params
-                .Select(jsonNode => new ParamAccessor(jsonNode, jsonSerializer))
-                .ToList();
-            var request = new Request
+            else
             {
-                TextMessage = textMessage,
-                MethodName = requestJson.MethodName,
-                Params = paramAccessors,
-                Id = requestJson.Id,
-            };
-
-            return Maybe<Request>.Some(request);
+                return Maybe<Request>.Some(request);
+            }
         }
 
         public void RespondTo(Request request, IResponse response)
         {
-            var serializedResponse = ResponseJson.Serialize(response);
+            var serializedResponse = serializationProvider.Serialize(response);
 
             var textMessage = session.CreateTextMessage(serializedResponse);
             messageProducer.Send(textMessage);

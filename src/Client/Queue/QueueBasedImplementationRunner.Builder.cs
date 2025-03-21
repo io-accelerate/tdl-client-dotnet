@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using TDL.Client.Queue.Abstractions;
+using Newtonsoft.Json.Serialization;
 
 namespace TDL.Client
 {
@@ -20,7 +21,13 @@ namespace TDL.Client
             public Builder()
             {
                 deployProcessingRules = CreateDeployProcessingRules();
-                jsonSerializer = new JsonSerializer();
+                jsonSerializer = new JsonSerializer
+                {
+                    ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy()
+                    }
+                };
             }
 
             public Builder SetConfig(ImplementationRunnerConfig config)

@@ -95,6 +95,9 @@ git push --tags
 git push
 ```
 
+Wait for the Github build to finish, then go to:
+https://www.nuget.org
+
 ## To manually build the NuGet files
 
 ```bash
@@ -106,11 +109,4 @@ dotnet pack --configuration Release src/Client
 export NUGET_TOKEN=<value from https://www.nuget.org/account/apikeys>
 dotnet nuget push src/Client/bin/Release/*.nupkg --api-key "$NUGET_TOKEN" --source https://api.nuget.org/v3/index.json
 ```
-
-# Hack and gotchas `.Net`
-
-1. I had to place FSharp.Core into the GAC
-
-For some reasons, mono was not finding FSharp.Core.dll.
-I have used `gacutils` to add the library into the General Assembly Cache.
 

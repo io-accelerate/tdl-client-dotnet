@@ -13,10 +13,8 @@ namespace TDL.Test.Specs.Queue.Factories
 
         private class TestItem
         {
-            [JsonProperty("field1")]
             public string Field1 { get; }
             
-            [JsonProperty("field2")]
             public int? Field2 { get; }
 
             public TestItem(string field1, int? field2)
