@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using TDL.Client.Queue.Abstractions;
 
 namespace TDL.Client.Queue
 {
@@ -11,7 +12,7 @@ namespace TDL.Client.Queue
             private readonly ProcessingRules processingRules;
             private readonly string methodName;
 
-            private Func<List<JToken>, object>? userImplementation;
+            private Func<List<ParamAccessor>, object>? userImplementation;
 
             public Builder(string methodName, ProcessingRules processingRules)
             {
@@ -19,7 +20,7 @@ namespace TDL.Client.Queue
                 this.processingRules = processingRules;
             }
 
-            public Builder Call(Func<List<JToken>, object> userImplementation)
+            public Builder Call(Func<List<ParamAccessor>, object> userImplementation)
             {
                 this.userImplementation = userImplementation;
                 return this;

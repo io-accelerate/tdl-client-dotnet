@@ -16,14 +16,6 @@ namespace TDL.Client.Queue.Serialization
         [JsonProperty("id")]
         public required string Id { get; set; }
 
-        public Request To() =>
-            new()
-            {
-                MethodName = MethodName,
-                Params = Params,
-                Id = Id
-            };
-
         public static RequestJson Deserialize(string value)
         {
             try

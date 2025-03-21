@@ -1,20 +1,29 @@
 ﻿using System;
-using System.Globalization;
 using System.Collections;
-using System.Linq;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using TDL.Client.Queue.Abstractions;
+
 
 namespace TDL.Client.Audit
 {
-    public static class PresentationExtensions
+    public class PresentationUtils
     {
-        public static string ToDisplayableRequest(this List<JToken> items)
+        private readonly JsonSerializer jsonSerializer;
+
+        public PresentationUtils(JsonSerializer jsonSerializer)
+        {
+            this.jsonSerializer = jsonSerializer;
+        }
+
+
+        public string ToDisplayableRequest(List<ParamAccessor> items)
         {
             StringBuilder sb = new();
-            foreach (JToken item in items) 
+            foreach (ParamAccessor item in items) 
             {
                 if (sb.Length > 0)
                 {
@@ -23,9 +32,9 @@ namespace TDL.Client.Audit
 
                 String representation;
 
-                if (item.GetType().Equals(typeof(JArray)))
+                if (item.IsArray())
                 {
-                    representation = ((JArray)item).ToString(Formatting.None);
+                    representation = item.GetAsObject<JArray>().ToString(Formatting.None);
                     representation = representation.Replace(",", ", ");  
                 }
                 else
@@ -45,7 +54,7 @@ namespace TDL.Client.Audit
             return sb.ToString();
         }
 
-        public static string ToDisplayableResponse(this Object item)
+        public string ToDisplayableResponse(Object item)
         {
             if (item == null)
                 return "null";

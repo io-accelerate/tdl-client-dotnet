@@ -6,10 +6,13 @@ namespace TDL.Client.Queue.Abstractions.Response
 
         public object Result { get; }
 
+        public bool IsError => true;
+
         public FatalErrorResponse(string message)
         {
             Result = message;
         }
+
 
         public string AuditText => $@"{Id} = ""{Result}"", (NOT PUBLISHED)";
     }

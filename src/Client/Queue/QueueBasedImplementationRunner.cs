@@ -4,6 +4,7 @@ using TDL.Client.Queue.Abstractions;
 using TDL.Client.Queue.Transport;
 using TDL.Client.Utils;
 using TDL.Client.Queue.Abstractions.Response;
+using Newtonsoft.Json;
 
 namespace TDL.Client
 {
@@ -12,13 +13,16 @@ namespace TDL.Client
         private readonly Audit audit;
         private readonly ProcessingRules deployProcessingRules;
         private readonly ImplementationRunnerConfig config;
+        private readonly JsonSerializer jsonSerializer;
 
         public QueueBasedImplementationRunner(
             ImplementationRunnerConfig config,
-            ProcessingRules deployProcessingRules)
+            ProcessingRules deployProcessingRules,
+            JsonSerializer jsonSerializer)
         {
             this.config = config ?? throw new ArgumentNullException(nameof(config));
             this.deployProcessingRules = deployProcessingRules ?? throw new ArgumentNullException(nameof(deployProcessingRules));
+            this.jsonSerializer = jsonSerializer;
 
             if (string.IsNullOrWhiteSpace(config.Hostname))
             {
@@ -35,7 +39,7 @@ namespace TDL.Client
                 throw new ArgumentException("ResponseQueueName cannot be null or empty", nameof(config.ResponseQueueName));
             }
 
-            audit = new Audit(config.AuditStream);
+            audit = new Audit(config.AuditStream, jsonSerializer);
         }
 
         public long RequestTimeoutMilliseconds => config.RequestTimeoutMilliseconds;
@@ -51,7 +55,8 @@ namespace TDL.Client
                     config.Port,
                     config.RequestQueueName,
                     config.ResponseQueueName,
-                    config.RequestTimeoutMilliseconds))
+                    config.RequestTimeoutMilliseconds,
+                    jsonSerializer))
                 {
                     audit.LogLine("Waiting for requests");
                     var request = remoteBroker.Receive();
@@ -75,10 +80,10 @@ namespace TDL.Client
             RemoteBroker remoteBroker)
         {
             audit.StartLine();
-            audit.Log(request);
+            audit.LogRequest(request);
 
             var response = processingRules.GetResponseFor(request);
-            audit.Log(response);
+            audit.LogResponse(response);
 
             audit.EndLine();
 

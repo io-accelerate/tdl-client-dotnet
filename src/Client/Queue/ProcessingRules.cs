@@ -14,7 +14,7 @@ namespace TDL.Client.Queue
 
         private void Add(
             string methodName,
-            Func<List<JToken>, object> userImplementation)
+            Func<List<ParamAccessor>, object> userImplementation)
         {
             rules.Add(methodName, new ProcessingRule(userImplementation));
         }

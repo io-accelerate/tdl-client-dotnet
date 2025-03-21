@@ -3,6 +3,8 @@ using TDL.Client.Audit;
 using TDL.Client.Queue;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using TDL.Client.Queue.Abstractions;
 
 namespace TDL.Client
 {
@@ -13,9 +15,12 @@ namespace TDL.Client
             private readonly ProcessingRules deployProcessingRules;
             private ImplementationRunnerConfig? config;
 
+            private JsonSerializer jsonSerializer;
+
             public Builder()
             {
                 deployProcessingRules = CreateDeployProcessingRules();
+                jsonSerializer = new JsonSerializer();
             }
 
             public Builder SetConfig(ImplementationRunnerConfig config)
@@ -24,7 +29,7 @@ namespace TDL.Client
                 return this;
             }
 
-            public Builder WithSolutionFor(string methodName, Func<List<JToken>, object> userImplementation)
+            public Builder WithSolutionFor(string methodName, Func<List<ParamAccessor>, object> userImplementation)
             {
                 deployProcessingRules
                     .On(methodName)
@@ -39,7 +44,7 @@ namespace TDL.Client
                 {
                     throw new InvalidOperationException("Config must be set before creating the runner.");
                 }
-                return new QueueBasedImplementationRunner(config, deployProcessingRules);
+                return new QueueBasedImplementationRunner(config, deployProcessingRules, jsonSerializer);
             }
 
             private static ProcessingRules CreateDeployProcessingRules()

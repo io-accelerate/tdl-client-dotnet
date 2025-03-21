@@ -8,6 +8,8 @@ namespace TDL.Client.Queue.Abstractions.Response
 
         public object Result { get; }
 
+        public bool IsError => false;
+
         public ValidResponse(
             string id,
             object result)
@@ -15,7 +17,5 @@ namespace TDL.Client.Queue.Abstractions.Response
             Id = id;
             Result = result;
         }
-
-        public string AuditText => "resp = "+Result.ToDisplayableResponse();
     }
 }

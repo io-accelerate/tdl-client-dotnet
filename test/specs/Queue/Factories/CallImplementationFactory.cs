@@ -3,37 +3,46 @@ using System.Linq;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using TDL.Client.Queue.Abstractions;
 
 namespace TDL.Test.Specs.Queue.Factories
 {
     internal static class CallImplementationFactory
     {
-        private static readonly Dictionary<string, Func<List<JToken>, object>> CallImplementations =
+        private static readonly Dictionary<string, Func<List<ParamAccessor>, object>> CallImplementations =
             new()
             {
                 ["add two numbers"] = args =>
-                    (int)args[0] + (int)args[1],
+                    args[0].GetAsInteger() + args[1].GetAsInteger(),
+
                 ["increment number"] = args =>
-                    (int)args[0] + 1,
+                    args[0].GetAsInteger() + 1,
+
                 ["return null"] = args =>
                     null!,
+
                 ["throw exception"] = args =>
                     throw new InvalidOperationException("faulty user code"),
+
                 ["replay the value"] = args =>
-                    (string)args[0]!,
+                    args[0].GetAsString()!,
+
                 ["sum the elements of an array"] = args =>
                 {
-                    JArray intArray = (JArray)args[0];
-                    return intArray.Select(c => (int)c).Sum();
+                    var numbers = args[0].GetAsListOf<int>();
+                    return numbers.Sum();
                 },
+
                 ["generate array of integers"] = args =>
                 {
-                    int startIncl = (int)args[0];
-                    int endExcl = (int)args[1];
+                    int startIncl = args[0].GetAsInteger();
+                    int endExcl = args[1].GetAsInteger();
                     return Enumerable.Range(startIncl, endExcl - startIncl).ToList();
                 },
+
                 ["some logic"] = args =>
                     "ok",
+
                 ["work for 600ms"] = args =>
                 {
                     try
@@ -45,10 +54,23 @@ namespace TDL.Test.Specs.Queue.Factories
                         Console.WriteLine(ex.ToString());
                     }
                     return "OK";
+                },
+
+                ["concatenate fields as string"] = args =>
+                {
+                    // You can implement actual logic here based on ParamAccessor usage
+                    return "OK";
+                },
+
+                ["build an object with two fields"] = args =>
+                {
+                    // You can implement actual object construction here
+                    return "OK";
                 }
             };
 
-        public static Func<List<JToken>, object> Get(string call)
+
+        public static Func<List<ParamAccessor>, object> Get(string call)
         {
             if (!CallImplementations.ContainsKey(call))
             {

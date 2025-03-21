@@ -6,10 +6,10 @@ namespace TDL.Client.Queue.Abstractions
 {
     public class ProcessingRule
     {
-        public Func<List<JToken>, object> UserImplementation { get; }
+        public Func<List<ParamAccessor>, object> UserImplementation { get; }
 
         public ProcessingRule(
-            Func<List<JToken>, object> userImplementation)
+            Func<List<ParamAccessor>, object> userImplementation)
         {
             UserImplementation = userImplementation;
         }

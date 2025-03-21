@@ -1,5 +1,6 @@
 using System;
 using Apache.NMS;
+using Newtonsoft.Json;
 using TDL.Client.Queue.Abstractions;
 using TDL.Client.Queue.Abstractions.Response;
 using TDL.Client.Queue.Serialization;
@@ -13,17 +14,19 @@ namespace TDL.Client.Queue.Transport
         private readonly ISession session;
         private readonly IMessageConsumer messageConsumer;
         private readonly IMessageProducer messageProducer;
-
         private readonly long timeout;
+        private readonly JsonSerializer jsonSerializer;
 
         public RemoteBroker(
             string hostname,
             int port,
             string requestqueuename,
             string responsequeuename,
-            long timeout)
+            long timeout,
+            JsonSerializer jsonSerializer)
         {
             this.timeout = timeout;
+            this.jsonSerializer = jsonSerializer;
 
             var brokerUrl = new Uri($"tcp://{hostname}:{port}");
             var connectionFactory = new Apache.NMS.ActiveMQ.ConnectionFactory(brokerUrl);
@@ -48,9 +51,16 @@ namespace TDL.Client.Queue.Transport
             }
 
             var requestJson = RequestJson.Deserialize(textMessage.Text);
-            var request = requestJson.To();
-
-            request.TextMessage = textMessage;
+            List<ParamAccessor> paramAccessors = requestJson.Params
+                .Select(jsonNode => new ParamAccessor(jsonNode, jsonSerializer))
+                .ToList();
+            var request = new Request
+            {
+                TextMessage = textMessage,
+                MethodName = requestJson.MethodName,
+                Params = paramAccessors,
+                Id = requestJson.Id,
+            };
 
             return Maybe<Request>.Some(request);
         }
