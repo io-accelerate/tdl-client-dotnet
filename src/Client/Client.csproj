@@ -38,7 +38,7 @@
   <ItemGroup>
     <PackageReference Include="Apache.NMS.ActiveMQ" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="RestSharp" Version="111.4.1" />
+    <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="111.4.1" />
     <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
