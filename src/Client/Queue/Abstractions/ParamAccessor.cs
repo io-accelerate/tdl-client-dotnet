@@ -35,7 +35,10 @@ namespace TDL.Client.Queue.Abstractions
         {
             try
             {
-                return jsonNode.ToObject<List<T>>(jsonSerializer);
+                var list = jsonNode.ToObject<List<T>>(jsonSerializer);
+                if (list == null)
+                    throw new InvalidOperationException($"Got null when deserialising to List<{typeof(T).Name}>");
+                return list;
             }
             catch (JsonException ex)
             {
@@ -47,7 +50,10 @@ namespace TDL.Client.Queue.Abstractions
         {
             try
             {
-                return jsonNode.ToObject<T>(jsonSerializer);
+                var list = jsonNode.ToObject<T>(jsonSerializer);
+                if (list == null)
+                    throw new InvalidOperationException($"Got null when deserialising to List<{typeof(T).Name}>");
+                return list;
             }
             catch (JsonException ex)
             {

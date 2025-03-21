@@ -32,7 +32,7 @@ namespace TDL.Client.Audit
                 try
                 {
                     var obj = item.GetAsObject<object>();
-                    representation = JsonConvert.SerializeObject(obj);
+                    representation = SerializeUsingInstance(obj);
                 }
                 catch (JsonException)
                 {
@@ -64,7 +64,7 @@ namespace TDL.Client.Audit
             string representation;
             try
             {
-                representation = JsonConvert.SerializeObject(item);
+                representation = SerializeUsingInstance(item);
             }
             catch (JsonException)
             {
@@ -81,6 +81,13 @@ namespace TDL.Client.Audit
             }
 
             return representation;
+        }
+
+        private string SerializeUsingInstance(object obj)
+        {
+            using var stringWriter = new StringWriter();
+            jsonSerializer.Serialize(stringWriter, obj);
+            return stringWriter.ToString();
         }
 
         private static bool IsMultilineString(string representation)
@@ -103,5 +110,6 @@ namespace TDL.Client.Audit
 
             return representation;
         }
+
     }
 }

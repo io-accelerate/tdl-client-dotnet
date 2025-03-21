@@ -4,11 +4,28 @@ using System.Threading;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using TDL.Client.Queue.Abstractions;
+using Newtonsoft.Json;
 
 namespace TDL.Test.Specs.Queue.Factories
 {
     internal static class CallImplementationFactory
     {
+
+        private class TestItem
+        {
+            [JsonProperty("field1")]
+            public string Field1 { get; }
+            
+            [JsonProperty("field2")]
+            public int? Field2 { get; }
+
+            public TestItem(string field1, int? field2)
+            {
+                Field1 = field1;
+                Field2 = field2;
+            }
+        }
+
         private static readonly Dictionary<string, Func<List<ParamAccessor>, object>> CallImplementations =
             new()
             {
@@ -58,14 +75,15 @@ namespace TDL.Test.Specs.Queue.Factories
 
                 ["concatenate fields as string"] = args =>
                 {
-                    // You can implement actual logic here based on ParamAccessor usage
-                    return "OK";
+                    var testItem = args[0].GetAsObject<TestItem>();
+                    return testItem.Field1 + testItem.Field2;
                 },
 
                 ["build an object with two fields"] = args =>
                 {
-                    // You can implement actual object construction here
-                    return "OK";
+                    var field1 = args[0].GetAsString();
+                    var field2 = args[1].GetAsInteger();
+                    return new TestItem(field1, field2);
                 }
             };
 
