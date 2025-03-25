@@ -28,27 +28,8 @@ namespace TDL.Client.Audit
                     sb.Append(", ");
                 }
 
-                string representation;
-                try
-                {
-                    var obj = item.GetAsObject<object>();
-                    representation = SerializeUsingInstance(obj);
-                }
-                catch (JsonException)
-                {
-                    representation = "serializationError";
-                }
-
-                if (item.IsArray())
-                {
-                    representation = representation.Replace(",", ", ");
-                }
-                else if (IsMultilineString(representation))
-                {
-                    representation = SuppressExtraLines(representation);
-                }
-
-                sb.Append(representation);
+                var obj = item.GetAsObject<object>();
+                sb.Append(SerialiseAndCompress(obj));
             }
 
             return sb.ToString();
@@ -56,11 +37,11 @@ namespace TDL.Client.Audit
 
         public string ToDisplayableResponse(object item)
         {
-            if (item == null)
-            {
-                return "null";
-            }
+            return SerialiseAndCompress(item);
+        }
 
+        private string SerialiseAndCompress(object item)
+        {
             string representation;
             try
             {
@@ -71,7 +52,7 @@ namespace TDL.Client.Audit
                 representation = "serializationError";
             }
 
-            if (item is IList)
+            if (IsList(item))
             {
                 representation = representation.Replace(",", ", ");
             }
@@ -86,8 +67,21 @@ namespace TDL.Client.Audit
         private string SerializeUsingInstance(object obj)
         {
             using var stringWriter = new StringWriter();
-            jsonSerializer.Serialize(stringWriter, obj);
+            var jsonWriter = new JsonTextWriter(stringWriter)
+            {
+                Formatting = Formatting.None,
+            };
+            jsonSerializer.Serialize(jsonWriter, obj);
             return stringWriter.ToString();
+        }
+
+
+        private static bool IsList(object item)
+        {
+            if (item == null) return false;
+            bool isJsonArray = item is Newtonsoft.Json.Linq.JArray;
+            bool isGenericList = item.GetType().IsGenericType && item.GetType().GetGenericTypeDefinition() == typeof(List<>);
+            return isJsonArray || isGenericList;
         }
 
         private static bool IsMultilineString(string representation)
