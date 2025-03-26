@@ -24,8 +24,8 @@ namespace TDL.Test.Specs.Queue
         private readonly LogAuditStream auditStream = new(new ConsoleAuditStream());
         private readonly RemoteJmxBroker broker = TestBroker.Instance;
 
-        private RemoteJmxQueue requestQueue = new(JolokiaSession.Connect("unset", 7777), "unset", "unset");
-        private RemoteJmxQueue responseQueue = new(JolokiaSession.Connect("unset", 7777), "unset", "unset");
+        private RemoteJmxQueue? requestQueue;
+        private RemoteJmxQueue? responseQueue;
         private QueueBasedImplementationRunner? queueBasedImplementationRunner;
         private QueueBasedImplementationRunner.Builder queueBasedImplementationRunnerBuilder = new();
 

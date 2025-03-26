@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Serializers.NewtonsoftJson;
 using TDL.Test.Specs.Utils.Jmx.Broker.JolokiaResponses;
@@ -23,7 +24,22 @@ namespace TDL.Test.Specs.Utils.Jmx.Broker
         public static JolokiaSession Connect(string host, int adminPort)
         {
             var jolokiaUri = new Uri($"http://{host}:{adminPort}/api/jolokia");
+            var versionUrl = $"{jolokiaUri}/version";
 
+            var client = new RestClient(versionUrl);
+            var request = new RestRequest("", Method.Get)
+            {
+                RequestFormat = DataFormat.Json
+            };
+
+            request.AddHeader("Origin", "http://localhost");
+
+            var response = client.Execute(request);
+
+            if (!response.IsSuccessful || string.IsNullOrEmpty(response.Content))
+            {
+                throw new Exception($"Failed Jolokia call: {response.StatusCode} - {response.ErrorMessage}");
+            }
             return new JolokiaSession(jolokiaUri);
         }
 
