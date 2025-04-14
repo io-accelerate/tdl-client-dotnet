@@ -82,6 +82,11 @@ namespace TDL.Test.Specs.Queue.Factories
                     var field1 = args[0].GetAsString();
                     var field2 = args[1].GetAsInteger();
                     return new TestItem(field1, field2);
+                },
+
+                ["retrieve a value from a map"] = args =>
+                {
+                    return args[0].GetAsMapOf<string>().GetValueOrDefault("key1", "not found");
                 }
             };
 

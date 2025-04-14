@@ -46,6 +46,22 @@ namespace TDL.Client.Queue.Abstractions
             }
         }
 
+
+        public Dictionary<string, T> GetAsMapOf<T>()
+        {
+            try
+            {
+                var list = jsonNode.ToObject<Dictionary<string, T>>(jsonSerializer);
+                if (list == null)
+                    throw new InvalidOperationException($"Got null when deserialising to Dictionary<string,{typeof(T).Name}>");
+                return list;
+            }
+            catch (JsonException ex)
+            {
+                throw new InvalidOperationException($"Failed to deserialize jsonNode to Dictionary of {typeof(T).Name}", ex);
+            }
+        }
+
         public T GetAsObject<T>()
         {
             try
